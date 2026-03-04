@@ -1,5 +1,5 @@
 # 🎰 Bingo-simulator-2026
-Bingo !!  Let's get more money!!!!!!!!!!
+**Bingo !!  Let's get more money!!!!!!!!!!)**
   ("2026 元宵加碼期間：三星全中 $1,000 | 中 2 碼 $50")
 
 ### **🛠️ 專案必要套件**
