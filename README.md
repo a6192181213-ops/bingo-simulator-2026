@@ -16,7 +16,7 @@
    * 在此 GitHub 頁面點擊 `app.py` 檔案。
    * 點擊右側的 **「Download raw file」** 按鈕（或是右鍵另存新檔）將檔案存到您的電腦。
    * 同樣下載 `requirements.txt` 並放在同一個資料夾。
-   * 下載`free sound effects`mp3檔案
+
 
 2. **安裝必要套件**
    * 開啟終端機 (Terminal) 或 CMD，切換至檔案路徑後執行：
@@ -26,5 +26,3 @@
 3. **啟動模擬器**
    streamlit run streamlit_app.py
 
-   ### **📢 執行注意事項**
-* **音效支援**：本專案包含中獎與虧錢音效，請確保資料夾內含有 `win.mp3` 與 `lose.mp3` 檔案。
