@@ -132,6 +132,11 @@ if st.button("🔥 開始賺錢", use_container_width=True):
     
     if net > 0:
         st.success(f"💰💰💰 恭喜獲利！賺了 ${net:,} 💰💰💰")
+        # 播放中獎音效：Money Sound Effect
+        st.video("https://www.youtube.com/watch?v=H7l3hUF85SU", autoplay=True)
     else:
         st.warning(f"虧麻了 $-{abs(net):,}。")
         st.success(f"哪有小孩天天哭 哪有賭徒天天輸 ！!")
+        # 播放虧錢音效：Oh No - Sound Effect
+        st.video("https://www.youtube.com/watch?v=_9AtzZIo2RY", autoplay=True)
+
