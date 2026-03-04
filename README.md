@@ -1,5 +1,5 @@
-# 🎰 bingo-simulator-2026
-bingo!! Let's get more money!!!!!!!!!!
+# 🎰 Bingo-simulator-2026
+Bingo !!  Let's get more money!!!!!!!!!!
 
 ### **🛠️ 專案必要套件**
 本專案使用以下 Python 工具開發：
