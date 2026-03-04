@@ -133,11 +133,11 @@ if st.button("🔥 開始賺錢", use_container_width=True):
     
     if net > 0:
         st.success(f"💰💰💰 恭喜獲利！賺了 ${net:,} 💰💰💰")
-        # 檢查檔案是否存在，避免報錯
         if os.path.exists("win.mp3"):
             with open("win.mp3", "rb") as f:
                 audio_bytes = f.read()
-            st.audio(audio_bytes, format="audio/mp3", autoplay=True)
+            # 加上隨機的 key (使用 time.time()) 確保每次點擊都重新觸發播放
+            st.audio(audio_bytes, format="audio/mp3", autoplay=True, key=f"win_{time.time()}")
         st.balloons()
     else:
         st.warning(f"虧麻了 $-{abs(net):,}。")
@@ -145,4 +145,5 @@ if st.button("🔥 開始賺錢", use_container_width=True):
         if os.path.exists("lose.mp3"):
             with open("lose.mp3", "rb") as f:
                 audio_bytes = f.read()
-            st.audio(audio_bytes, format="audio/mp3", autoplay=True)
+            # 這裡同樣加上動態 key，解決「重複虧錢」音效不跑出來的問題
+            st.audio(audio_bytes, format="audio/mp3", autoplay=True, key=f"lose_{time.time()}")
