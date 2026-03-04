@@ -1,7 +1,7 @@
 import streamlit as st
 import random
 import pandas as pd
-import time
+import os
 
 # --- 網頁標題與設定 ---
 st.set_page_config(page_title="賓果 2026 賺錢模擬器", page_icon="🎲", layout="wide")
@@ -133,10 +133,16 @@ if st.button("🔥 開始賺錢", use_container_width=True):
     
     if net > 0:
         st.success(f"💰💰💰 恭喜獲利！賺了 ${net:,} 💰💰💰")
-        # 播放中獎音效：Money Sound Effect
-        st.audio(f"win.mp3?t={time.time()}", format="audio/mp3", autoplay=True)
+        # 檢查檔案是否存在，避免報錯
+        if os.path.exists("win.mp3"):
+            with open("win.mp3", "rb") as f:
+                audio_bytes = f.read()
+            st.audio(audio_bytes, format="audio/mp3", autoplay=True)
+        st.balloons()
     else:
         st.warning(f"虧麻了 $-{abs(net):,}。")
         st.success(f"哪有小孩天天哭 哪有賭徒天天輸 ！!")
-        # 播放虧錢音效：Oh No - Sound Effect
-        st.audio(f"lose.mp3?t={time.time()}", format="audio/mp3", autoplay=True)
+        if os.path.exists("lose.mp3"):
+            with open("lose.mp3", "rb") as f:
+                audio_bytes = f.read()
+            st.audio(audio_bytes, format="audio/mp3", autoplay=True)
