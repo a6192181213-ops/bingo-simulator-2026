@@ -1,13 +1,13 @@
 import streamlit as st
 import random
 import pandas as pd
+import os
+import base64 # 加入 base64 模組
 
 # --- 網頁標題與設定 ---
 st.set_page_config(page_title="賓果 2026 賺錢模擬器", page_icon="🎲", layout="wide")
 st.title("🎰 賓果賓果三星：賺錢模擬器")
 st.caption("2026 元宵加碼期間：三星全中 $1,000 | 中 2 碼 $50")
-
-
 
 # --- 側邊欄設定 ---
 st.sidebar.header("⚙️ 全局參數設定")
@@ -20,24 +20,21 @@ if 'num_sets' not in st.session_state: st.session_state.num_sets = 1
 if st.sidebar.button("🚀 1,000元發財套餐(1倍4組10期)"):
     st.session_state.num_periods = 10
     st.session_state.num_sets = 4
-    # 強制將所有可能出現的組別倍率重設為 1
     for i in range(10):
-        st.session_state[f"input_mult_{i}"] = 1 # 這裡直接操作元件的 key
+        st.session_state[f"input_mult_{i}"] = 1
     st.rerun()
 
 # 套餐 B：集中火力
 if st.sidebar.button("🎯 1,000元發財套餐(1組4倍10期)"):
     st.session_state.num_periods = 10
     st.session_state.num_sets = 1
-    # 強制將第一組元件的 key 設為 4
     st.session_state["input_mult_0"] = 4 
     st.rerun()
 
-# 側邊欄滑桿 (使用 state 作為初始值)
+# 側邊欄滑桿
 num_periods = st.sidebar.slider("模擬期數", 1, 100, value=st.session_state.num_periods)
 num_sets = st.sidebar.slider("選擇下注組數", 1, 10, value=st.session_state.num_sets)
 
-# 同步滑桿回 state
 st.session_state.num_periods = num_periods
 st.session_state.num_sets = num_sets
 
@@ -46,11 +43,9 @@ st.header("🎯 下注組別配置")
 betting_configs = []
 
 for i in range(num_sets):
-    # 號碼初始化
     if f"nums_{i}" not in st.session_state:
         st.session_state[f"nums_{i}"] = sorted(random.sample(range(1, 81), 3))
     
-    # 倍率初始化（若元件 key 還沒在 state 裡，則補 1）
     if f"input_mult_{i}" not in st.session_state:
         st.session_state[f"input_mult_{i}"] = 1
         
@@ -65,8 +60,6 @@ for i in range(num_sets):
             st.session_state[f"nums_{i}"] = selected_nums
             
         with col_m:
-            # 修改重點：直接使用 key 綁定 session_state，不手動傳入 value
-            # 這樣按鈕修改 st.session_state[f"input_mult_{i}"] 時，畫面會直接同步
             multiplier = st.number_input(
                 f"倍率", 
                 min_value=1, 
@@ -130,12 +123,22 @@ if st.button("🔥 開始賺錢", use_container_width=True):
 
     st.dataframe(df.set_index("期數"), use_container_width=True)
     
+    # --- 終極音效解決方案 (支援手機瀏覽器) ---
     if net > 0:
         st.success(f"💰💰💰 恭喜獲利！賺了 ${net:,} 💰💰💰")
-        # 播放中獎音效：Money Sound Effect
-        st.audio("win.mp3", format="audio/mp3", autoplay=True)
+        st.balloons()
+        if os.path.exists("win.mp3"):
+            with open("win.mp3", "rb") as f:
+                data = f.read()
+                b64 = base64.b64encode(data).decode()
+                # 透過 HTML 隱藏播放器，強制背景播放
+                st.markdown(f'<audio autoplay="true"><source src="data:audio/mp3;base64,{b64}" type="audio/mp3"></audio>', unsafe_allow_html=True)
     else:
         st.warning(f"虧麻了 $-{abs(net):,}。")
         st.success(f"哪有小孩天天哭 哪有賭徒天天輸 ！!")
-        # 播放虧錢音效：Oh No - Sound Effect
-        st.audio("lose.mp3", format="audio/mp3", autoplay=True)
+        if os.path.exists("lose.mp3"):
+            with open("lose.mp3", "rb") as f:
+                data = f.read()
+                b64 = base64.b64encode(data).decode()
+                # 透過 HTML 隱藏播放器，強制背景播放
+                st.markdown(f'<audio autoplay="true"><source src="data:audio/mp3;base64,{b64}" type="audio/mp3"></audio>', unsafe_allow_html=True)
